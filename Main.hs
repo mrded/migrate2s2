@@ -3,6 +3,8 @@ import Data.Semigroup ((<>))
 
 data Args = Args
   { database   :: String 
+  , table      :: String
+  , column     :: String
   , host       :: String
   , port       :: Int
   , user       :: String
@@ -14,6 +16,16 @@ args = Args
           ( long "database"
          <> short 'D'
          <> help "Database to use."
+         <> metavar "name" )
+      <*> strOption
+          ( long "table"
+         <> short 't'
+         <> help "Table to use."
+         <> metavar "name" )
+      <*> strOption
+          ( long "column"
+         <> short 'c'
+         <> help "Column to use."
          <> metavar "name" )
       <*> strOption
           ( long "host"
@@ -51,7 +63,7 @@ main = greet =<< execParser opts
       ( fullDesc <> progDesc "Migrates images to S3" )
 
 greet :: Args -> IO ()
-greet (Args database host user password port) = putStrLn $ "Connecting to "
+greet (Args database table column host user password port) = putStrLn $ "Connecting to "
          ++ host
          ++ ":"
          ++ port 
