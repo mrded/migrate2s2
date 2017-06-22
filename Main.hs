@@ -4,9 +4,9 @@ import Data.Semigroup ((<>))
 data Args = Args
   { database   :: String 
   , host       :: String
+  , port       :: Int
   , user       :: String
-  , password   :: String
-  , port       :: Int }
+  , password   :: String }
 
 args :: Parser Args
 args = Args
@@ -22,6 +22,13 @@ args = Args
          <> showDefault
          <> value "localhost"
          <> metavar "name" )
+      <*> option auto
+          ( long "port"
+         <> short 'P'
+         <> help "Port number to use for connection."
+         <> showDefault
+         <> value 3306
+         <> metavar "#" )
       <*> strOption
           ( long "user"
          <> short 'u'
@@ -36,13 +43,6 @@ args = Args
          <> showDefault
          <> value "root"
          <> metavar "name" )
-      <*> option auto
-          ( long "port"
-         <> short 'P'
-         <> help "Port number to use for connection."
-         <> showDefault
-         <> value 3306
-         <> metavar "#" )
 
 main :: IO ()
 main = greet =<< execParser opts
@@ -51,4 +51,11 @@ main = greet =<< execParser opts
       ( fullDesc <> progDesc "Migrates images to S3" )
 
 greet :: Args -> IO ()
+greet (Args database host user password port) = putStrLn $ "Connecting to "
+         ++ host
+         ++ ":"
+         ++ port 
+         ++ "/" 
+         ++ database
+
 greet _ = return ()
