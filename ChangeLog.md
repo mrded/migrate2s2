@@ -1,4 +1,4 @@
-# Revision history for migrate2s2
+# Revision history for migrate2s3
 
 ## 0.1.0.0  -- YYYY-mm-dd
 
